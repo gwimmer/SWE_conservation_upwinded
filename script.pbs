@@ -1,0 +1,28 @@
+#!/bin/bash
+# Job name
+#PBS -N W2_ec_D-ad
+# Time required in hh:mm:ss
+#PBS -l walltime=47:59:59
+# Resource requirements
+#PBS -l select=1:ncpus=32:mpiprocs=32:ompthreads=1:mem=31999Mb
+# Files to contain standard error and standard output
+#PBS -o stdout_W2_ec_D-ad
+#PBS -e stderr_W2_ec_D-ad
+
+cd $PBS_O_WORKDIR
+rm -f stdout* stderr*
+
+module load gcc
+module load mpi
+export I_MPI_CC=gcc
+export I_MPI_CXX=g++
+
+source $HOME/firedrake/bin/activate
+
+# Start time
+echo Start time is `date` > date_W2_ec_D-ad
+
+mpiexec python $WORK/W2/W2_ec_D-ad.py
+
+# End time
+echo End time is `date` >> date_W2_ec_D-ad
